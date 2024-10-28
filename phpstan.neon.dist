@@ -1,0 +1,13 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - config/
+        - database/
+        - src/
+        - tests/
+
+    # Level 9 is the highest level
+    level: 5

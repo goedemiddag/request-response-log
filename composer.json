@@ -1,0 +1,50 @@
+{
+    "name": "goedemiddag/request-response-log",
+    "description": "Package for logging (external) requests and the responses",
+    "homepage": "https://github.com/goedemiddag/request-response-log",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dick van der Heiden",
+            "email": "dick@goedemiddag.nl"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "laravel/framework": "^10.0|^11.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^2.9",
+        "orchestra/testbench": "^9.5",
+        "phpunit/phpunit": "^11.4",
+        "roave/security-advisories": "dev-latest",
+        "symplify/easy-coding-standard": "^12.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Goedemiddag\\RequestResponseLog\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Goedemiddag\\RequestResponseLog\\Tests\\": "tests"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "code-style:check": "vendor/bin/ecs",
+        "code-style:fix": "vendor/bin/ecs --fix",
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/phpunit",
+        "test:no-coverage": "vendor/bin/phpunit --no-coverage"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Goedemiddag\\RequestResponseLog\\RequestResponseLogServiceProvider"
+            ]
+        }
+    }
+}
