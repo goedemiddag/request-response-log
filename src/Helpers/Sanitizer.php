@@ -3,6 +3,7 @@
 namespace Goedemiddag\RequestResponseLog\Helpers;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use JsonException;
 
 class Sanitizer
@@ -41,8 +42,10 @@ class Sanitizer
         $sensitiveFieldsPerVendor = Arr::get(config('request-response-log.security.sensitive_fields_per_vendor', []), $vendor, []);
 
         foreach ($array as $key => $value) {
-            $hasGenericSensitiveKey = in_array($key, $sensitiveFields, true);
-            $hasVendorSensitiveKey = in_array($key, $sensitiveFieldsPerVendor, true);
+            $searchKey = Str::lower($key);
+
+            $hasGenericSensitiveKey = in_array($searchKey, $sensitiveFields, true);
+            $hasVendorSensitiveKey = in_array($searchKey, $sensitiveFieldsPerVendor, true);
 
             // When the key is sensitive, mask the value
             if ($hasGenericSensitiveKey || $hasVendorSensitiveKey) {
