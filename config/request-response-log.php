@@ -6,7 +6,7 @@ return [
     'prune_after_days' => 30,
 
     'security' => [
-        // For security reason we should not log sensitive fields.
+        // For security reason we should not log sensitive fields. These fields will be checked case-insensitive.
         'sensitive_fields' => [
             'password',
             'access_token',
@@ -22,6 +22,8 @@ return [
             'php-auth-digest',
         ],
 
+        // For security reason we should not log sensitive fields for certain vendors. These fields will be checked
+        // case-insensitive.
         'sensitive_fields_per_vendor' => [],
     ],
 

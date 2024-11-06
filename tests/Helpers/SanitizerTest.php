@@ -12,13 +12,16 @@ class SanitizerTest extends TestCase
         $data = [
             'password' => 'secret',
             'hello' => 'world',
+            'Authorization' => 'Bearer my-secret-key',
         ];
 
         $sanitizedData = Sanitizer::filterSensitiveData($data);
 
         $this->assertArrayHasKey('password', $sanitizedData);
         $this->assertArrayHasKey('hello', $sanitizedData);
+        $this->assertArrayHasKey('Authorization', $sanitizedData);
         $this->assertSame('********', $sanitizedData['password']);
+        $this->assertSame('********', $sanitizedData['Authorization']);
         $this->assertSame('world', $sanitizedData['hello']);
     }
 
