@@ -6,7 +6,7 @@ use Closure;
 use Goedemiddag\RequestResponseLog\Enums\RequestFlow;
 use Goedemiddag\RequestResponseLog\ManualRequestResponseLogger;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationRequestResponseLogger
 {
