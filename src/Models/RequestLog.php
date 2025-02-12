@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 /**
+ * @property string $id
  * @property RequestFlow $flow
  * @property string $vendor
  * @property string $method

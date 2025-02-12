@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
+ * @property string $id
  * @property string $request_log_id
  * @property bool $success
  * @property int $status_code

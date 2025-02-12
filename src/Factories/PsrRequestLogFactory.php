@@ -72,11 +72,26 @@ readonly class PsrRequestLogFactory implements Factory
 
     private function getBody(): array|string
     {
+        $contents = $this
+            ->request
+            ->getBody()
+            ->getContents();
+        if (! ctype_print($contents)) {
+            return '--binary--';
+        }
+
+        $contentType = $this
+            ->request
+            ->getHeader('Content-Type');
+        if ($contentType === ['application/x-www-form-urlencoded']) {
+            return Sanitizer::filterSensitiveData(
+                array: HeaderUtils::parseQuery($contents),
+                vendor: $this->vendor,
+            );
+        }
+
         return Sanitizer::sanitizeBody(
-            body: $this
-                ->request
-                ->getBody()
-                ->getContents(),
+            body: $contents,
             vendor: $this->vendor,
         );
     }
