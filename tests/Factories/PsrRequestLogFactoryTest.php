@@ -43,4 +43,39 @@ class PsrRequestLogFactoryTest extends TestCase
             'request_identifier' => 'hello-world',
         ]);
     }
+
+    public function test_it_filters_sensitive_data_in_form_data(): void
+    {
+        $factory = new PsrRequestLogFactory(
+            request: new Request(
+                method: 'POST',
+                uri: new Uri('https://echo.hoppscotch.io/path?test=1'),
+                headers: [
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                ],
+                body: 'username=test&password=test&hello=world',
+            ),
+            vendor: 'test',
+            flow: RequestFlow::Incoming,
+            requestIdentifier: 'hello-world',
+        );
+
+        $requestLog = $factory->build();
+
+        $requestLog->save();
+
+        $this->assertDatabaseHas('request_logs', [
+            'id' => $requestLog->id,
+            'flow' => 'in',
+            'vendor' => 'test',
+            'method' => 'POST',
+            'headers' => json_encode(['Host' => ['echo.hoppscotch.io'], 'Accept' => ['application/json'], 'Content-Type' => ['application/x-www-form-urlencoded']]),
+            'base_uri' => 'https://echo.hoppscotch.io',
+            'path' => '/path',
+            'query_parameters' => json_encode(['test' => '1']),
+            'body' => json_encode(['username' => 'test', 'password' => '********', 'hello' => 'world']),
+            'request_identifier' => 'hello-world',
+        ]);
+    }
 }
