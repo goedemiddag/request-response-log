@@ -166,6 +166,19 @@ $schedule
     ->daily();
 ```
 
+## Request Identifier
+
+It is possible to provide a specific request identifier to the logger which helps you relate logs to each other. In 
+case you are using the middleware or the request middleware, you can use the Laravel Context to provide the `request-identifier`. 
+
+```php
+Context::add('request-identifier', 'your-identifier');
+```
+
+When using the application middleware, make sure to set the request identifier **before** the middleware is called.
+
+For more information on how to use this, see the `ApplicationRequestResponseLoggerTest` for an example.
+
 ## Contributing
 
 Found a bug or want to add a new feature? Great! There are also many other ways to make meaningful contributions such 
