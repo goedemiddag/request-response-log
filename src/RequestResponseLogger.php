@@ -4,6 +4,7 @@ namespace Goedemiddag\RequestResponseLog;
 
 use Goedemiddag\RequestResponseLog\Factories\PsrRequestLogFactory;
 use Goedemiddag\RequestResponseLog\Factories\PsrResponseLogFactory;
+use Illuminate\Support\Facades\Context;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -16,6 +17,7 @@ class RequestResponseLogger
                 $requestLogFactory = new PsrRequestLogFactory(
                     request: $request,
                     vendor: $vendor,
+                    requestIdentifier: Context::get('request-identifier'),
                 );
 
                 $requestLog = $requestLogFactory->build();
