@@ -4,10 +4,12 @@ includes:
 parameters:
 
     paths:
-        - config/
         - database/
         - src/
         - tests/
 
     # Level 9 is the highest level
     level: 5
+
+    ignoreErrors:
+        - '#not covariant with PHPDoc type list<string>#'

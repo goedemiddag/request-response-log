@@ -11,7 +11,7 @@ request and response logging.
 
 ## Requirements
 
-This package requires Laravel 10+ and PHP 8.3+.
+This package requires Laravel 11+ and PHP 8.3+.
 
 ## Installation
 
