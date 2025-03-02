@@ -69,14 +69,16 @@ class RequestLog extends LogModel
 
     public function prunable(): Builder
     {
-        $config = config('request-response-log.prune_after_days');
+        $amountOfDaysToKeepLogs = config('request-response-log.prune_after_days');
 
-        // When the config is set to null, we don't want to prune anything so return a query that will never give any
-        // results.
-        if ($config === null) {
+        // When the config is set to null, we don't want to prune anything so return a query that will never return any
+        // results as prunable requires a query to be returned.
+        if ($amountOfDaysToKeepLogs === null) {
             return static::query()->whereNull('created_at');
         }
 
-        return static::query()->where('created_at', '<=', Carbon::now()->subDays());
+        $createdAtLimit = Carbon::today()->subDays($amountOfDaysToKeepLogs);
+
+        return static::query()->where('created_at', '<=', $createdAtLimit);
     }
 }
