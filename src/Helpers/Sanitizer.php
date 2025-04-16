@@ -8,6 +8,17 @@ use JsonException;
 
 class Sanitizer
 {
+    /**
+     * Determines if the string contains a binary by checking for bytes that do not represent a character in any
+     * language. The most efficient way is to check for UTF-8 compliance.
+     *
+     * @see https://stackoverflow.com/a/76816100
+     */
+    public static function isBinary(string $value): bool
+    {
+        return mb_check_encoding($value, 'UTF-8') === false;
+    }
+
     public static function sanitizeBody(string $body, ?string $vendor = null): string|array
     {
         // Try to parse the content as JSON to see if we can filter the sensitive data from it

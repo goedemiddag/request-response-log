@@ -76,7 +76,7 @@ readonly class PsrRequestLogFactory implements Factory
             ->request
             ->getBody()
             ->getContents();
-        if (! ctype_print($contents)) {
+        if (Sanitizer::isBinary($contents)) {
             return '--binary--';
         }
 
