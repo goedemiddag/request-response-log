@@ -61,14 +61,14 @@ readonly class SymfonyResponseLogFactory implements Factory
             ->response
             ->getContent();
 
-        return ctype_print($contents)
-            ? Sanitizer::sanitizeBody(
+        return Sanitizer::isBinary($contents)
+            ? '--binary--'
+            : Sanitizer::sanitizeBody(
                 body: $contents,
                 vendor: $this
                     ->requestLog
                     ->vendor,
-            )
-            : '--binary--';
+            );
     }
 
     public function build(): ResponseLog
