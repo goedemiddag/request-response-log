@@ -2,18 +2,20 @@
 
 namespace Goedemiddag\RequestResponseLog;
 
+use Goedemiddag\RequestResponseLog\Contracts\BacktraceResolver;
 use Goedemiddag\RequestResponseLog\Factories\PsrRequestLogFactory;
 use Goedemiddag\RequestResponseLog\Factories\PsrResponseLogFactory;
+use Goedemiddag\RequestResponseLog\Support\BacktraceResolvers\IgnoredResolver;
 use Illuminate\Support\Facades\Context;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class RequestResponseLogger
 {
-    public static function middleware(string $vendor): callable
+    public static function middleware(string $vendor, BacktraceResolver $backtraceResolver = new IgnoredResolver()): callable
     {
-        return static function (callable $handler) use ($vendor): callable {
-            return static function (RequestInterface $request, array $options = []) use ($vendor, $handler) {
+        return static function (callable $handler) use ($vendor, $backtraceResolver): callable {
+            return static function (RequestInterface $request, array $options = []) use ($vendor, $backtraceResolver, $handler) {
                 $requestLogFactory = new PsrRequestLogFactory(
                     request: $request,
                     vendor: $vendor,
@@ -21,7 +23,7 @@ class RequestResponseLogger
                 );
 
                 $requestLog = $requestLogFactory->build();
-
+                $requestLog->backtrace = $backtraceResolver->get();
                 $requestLog->save();
 
                 return $handler($request, $options)->then(

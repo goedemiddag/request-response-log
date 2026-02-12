@@ -20,6 +20,7 @@ use Illuminate\Support\Collection;
  * @property string $path
  * @property array $query_parameters
  * @property mixed $body
+ * @property mixed $backtrace
  * @property string $request_identifier
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -44,6 +45,7 @@ class RequestLog extends LogModel
         'path',
         'query_parameters',
         'body',
+        'backtrace',
         'request_identifier',
     ];
 
@@ -57,6 +59,7 @@ class RequestLog extends LogModel
         'headers' => 'array',
         'query_parameters' => 'array',
         'body' => 'json',
+        'backtrace' => 'json',
     ];
 
     /**
