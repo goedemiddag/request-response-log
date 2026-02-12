@@ -120,6 +120,62 @@ ManualRequestResponseLogger::fromResponse(
 );
 ```
 
+### Including backtrace
+
+When you want to know where the request has been made for, is it possible to include the backtrace in the log. By 
+default, the backtrace isn't logged, as it can contain quite a lot of data. If you want to include the backtrace, there
+are several backtrace resolvers available:
+
+- `IgnoreResolver`: Do not log the backtrace. This is the default.
+- `DefaultResolver`: Logs the full PHP backtrace. This requires the most resources so be careful.
+- `LaravelApplicationResolver`: Logs the Laravel backtrace, which is a bit more optimized.
+
+#### Using the backtrace resolver
+
+You can provide the backtrace resolver to the middleware helper:
+
+```php
+use Goedemiddag\RequestResponseLog\Support\BacktraceResolvers\DefaultResolver;
+
+RequestResponseLogger::middleware('vendor', new DefaultResolver());
+```
+
+Or when you are using the manual logger: 
+
+```php
+use Goedemiddag\RequestResponseLog\Support\BacktraceResolvers\DefaultResolver;
+
+ManualRequestResponseLogger::fromRequest(
+    vendor: 'vendor',
+    request: $request,
+    flow: RequestFlow::Incoming,
+    backtraceResolver: new DefaultResolver(),
+);
+```
+
+#### Laravel backtraces
+
+When using the `LaravelApplicationResolver`, you can also configure which frames to include in the backtrace. By 
+default, it ignores as much as possible and tries to include the specific frames. You can configure this when 
+initializing the resolver:
+
+```php
+use Goedemiddag\RequestResponseLog\Support\BacktraceResolvers\LaravelApplicationResolver;
+
+new LaravelApplicationResolver(
+    includeIndex: false, // Whether to include the frame on index.php
+    includeVendor: false, // Whether to include frames from the vendor directory
+    includeMiddleware: false, // Whether to include frames from the middleware directory
+    includePipeline: false, // Whether to include frames from the pipeline namespace
+    includeRouting: false, // Whether to include frames from the routing namespace
+);
+```
+
+#### Custom backtrace resolver
+
+Feel free to create your own backtrace resolver by implementing the `BacktraceResolver` interface. This allows you to 
+create a custom backtrace resolver that fits your needs perfectly.
+
 ## Configuration
 
 The package provides a configuration file that allows you to configure the package to your needs. You can change the 
