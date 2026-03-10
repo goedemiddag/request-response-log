@@ -199,7 +199,7 @@ This package uses the default model prune functionality from Laravel to clean up
 of days to keep logs in the configuration file. To clean up the logs automatically, schedule the model prune command
 and pass the model you want to prune:
 
-### Laravel 11
+### Laravel 11+
 
 Add the following to your `routes/console.php` file:
 
@@ -210,7 +210,7 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::command('model:prune', ['--model' => [RequestLog::class]])->daily();
 ```
 
-## Laravel 10
+## Laravel 10 and below
 
 Add the following to your `app/Console/Kernel.php` file:
 
@@ -234,6 +234,25 @@ Context::add('request-identifier', 'your-identifier');
 When using the application middleware, make sure to set the request identifier **before** the middleware is called.
 
 For more information on how to use this, see the `ApplicationRequestResponseLoggerTest` for an example.
+
+## Additional context
+
+Besides the request identifier, you can also provide additional context to the logger. This can be useful when you want 
+to log some extra information that is not included in the request or response.
+
+You can provide this context to the `ManualRequestResponseLogger` and `RequestResponseLogger::middleware`.
+
+```php
+RequestResponseLogger::middleware(
+    vendor: 'middleware-test-vendor',
+    context: static fn (): array => ['test' => 'value'],
+);
+```
+
+The context parameter can be an array or a closure that returns an array. The closure will be executed when the log is  
+created, so you can use it to provide dynamic context.
+
+For more information on how to use this, see the `RequestResponseLoggerTest` for an example.
 
 ## Contributing
 

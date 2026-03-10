@@ -23,6 +23,10 @@ class SymfonyRequestLogFactoryTest extends TestCase
             vendor: 'test',
             flow: RequestFlow::Incoming,
             requestIdentifier: 'hello-world',
+            context: [
+                'context-1' => 'value-1',
+                'context-2' => 'value-2',
+            ],
         );
 
         $requestLog = $factory->build();
@@ -40,6 +44,7 @@ class SymfonyRequestLogFactoryTest extends TestCase
             'query_parameters' => json_encode(['test' => '1']),
             'body' => json_encode(['hello' => 'world']),
             'request_identifier' => 'hello-world',
+            'context' => json_encode(['context-1' => 'value-1', 'context-2' => 'value-2']),
         ]);
     }
 }

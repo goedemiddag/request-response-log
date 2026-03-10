@@ -11,13 +11,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationRequestResponseLogger
 {
-    public function handle(Request $request, Closure $next, string $vendor = 'app'): Response
+    public function handle(Request $request, Closure $next, string $vendor = 'app', Closure|array|null $context = []): Response
     {
         $requestLog = ManualRequestResponseLogger::fromRequest(
             vendor: $vendor,
             request: $request,
             flow: RequestFlow::Incoming,
             requestIdentifier: Context::get('request-identifier'),
+            context: $context,
         );
 
         $response = $next($request);

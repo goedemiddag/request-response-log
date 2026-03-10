@@ -26,7 +26,7 @@ class ApplicationRequestResponseLoggerTest extends TestCase
 
         $middleware = new ApplicationRequestResponseLogger();
 
-        $response = $middleware->handle($request, $next, 'application');
+        $response = $middleware->handle($request, $next, 'application', static fn(): array => ['test' => 'value']);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertDatabaseHas(RequestLog::class, [
@@ -37,6 +37,7 @@ class ApplicationRequestResponseLoggerTest extends TestCase
             'query_parameters' => json_encode(['app' => '1']),
             'body' => json_encode(['logged' => 'success']),
             'request_identifier' => 'test-request-identifier',
+            'context' => json_encode(['test' => 'value']),
         ]);
     }
 }

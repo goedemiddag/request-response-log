@@ -2,6 +2,7 @@
 
 namespace Goedemiddag\RequestResponseLog\Factories;
 
+use Closure;
 use Goedemiddag\RequestResponseLog\Contracts\Factory;
 use Goedemiddag\RequestResponseLog\Enums\RequestFlow;
 use Goedemiddag\RequestResponseLog\Helpers\Sanitizer;
@@ -10,11 +11,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 readonly class SymfonyRequestLogFactory implements Factory
 {
+    /**
+     * @param array|Closure():array|null $context
+     */
     public function __construct(
         private Request $request,
         private string $vendor,
         private RequestFlow $flow = RequestFlow::Outgoing,
         private ?string $requestIdentifier = null,
+        private Closure|array|null $context = [],
     ) {
     }
 
@@ -84,6 +89,7 @@ readonly class SymfonyRequestLogFactory implements Factory
             'query_parameters' => $this->getQueryParameters(),
             'body' => $this->getBody(),
             'request_identifier' => $this->requestIdentifier,
+            'context' => value($this->context) ?? [],
         ]);
     }
 }
