@@ -2,6 +2,7 @@
 
 namespace Goedemiddag\RequestResponseLog;
 
+use Closure;
 use Goedemiddag\RequestResponseLog\Contracts\BacktraceResolver;
 use Goedemiddag\RequestResponseLog\Enums\RequestFlow;
 use Goedemiddag\RequestResponseLog\Factories\SymfonyRequestLogFactory;
@@ -14,18 +15,23 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ManualRequestResponseLogger
 {
+    /**
+     * @param array|Closure():array|null $context
+     */
     public static function fromRequest(
         string $vendor,
         Request $request,
         RequestFlow $flow = RequestFlow::Outgoing,
         ?string $requestIdentifier = null,
         BacktraceResolver $backtraceResolver = new IgnoredResolver(),
+        Closure|array|null $context = [],
     ): RequestLog {
         $factory = new SymfonyRequestLogFactory(
             request: $request,
             vendor: $vendor,
             flow: $flow,
             requestIdentifier: $requestIdentifier,
+            context: $context,
         );
 
         $requestLog = $factory->build();

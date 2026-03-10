@@ -18,7 +18,10 @@ class RequestResponseLoggerTest extends TestCase
         ]);
 
         $handlerStack = HandlerStack::create($mock);
-        $handlerStack->push(RequestResponseLogger::middleware('middleware-test-vendor'));
+        $handlerStack->push(RequestResponseLogger::middleware(
+            vendor: 'middleware-test-vendor',
+            context: static fn(): array => ['test' => 'value'],
+        ));
 
         $client = new Client(['handler' => $handlerStack]);
         $client->request(
@@ -39,6 +42,7 @@ class RequestResponseLoggerTest extends TestCase
             'path' => '/middleware',
             'query_parameters' => json_encode(['test' => 'true']),
             'body' => json_encode(['hello' => 'world']),
+            'context' => json_encode(['test' => 'value']),
         ]);
     }
 }

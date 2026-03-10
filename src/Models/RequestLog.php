@@ -46,6 +46,7 @@ class RequestLog extends LogModel
         'query_parameters',
         'body',
         'backtrace',
+        'context',
         'request_identifier',
     ];
 
@@ -60,6 +61,7 @@ class RequestLog extends LogModel
         'query_parameters' => 'array',
         'body' => 'json',
         'backtrace' => 'json',
+        'context' => 'json',
     ];
 
     /**
